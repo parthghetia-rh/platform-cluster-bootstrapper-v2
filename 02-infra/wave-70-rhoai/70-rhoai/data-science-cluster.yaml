@@ -18,7 +18,7 @@ spec:
     kserve:
       managementState: Managed
       modelsAsService:
-        managementState: Managed
+        managementState: Removed
       nim:
         airGapped: false
         managementState: Managed
@@ -44,7 +44,7 @@ spec:
     kueue:
       defaultClusterQueueName: default
       defaultLocalQueueName: default
-      managementState: Unmanaged
+      managementState: Removed
     workbenches:
       managementState: Managed
       workbenchNamespace: rhods-notebooks
