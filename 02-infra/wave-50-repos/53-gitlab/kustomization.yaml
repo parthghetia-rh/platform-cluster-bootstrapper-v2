@@ -12,5 +12,5 @@ resources:
   - rbac.yaml
   - route.yaml
   - secret-repo-org-template.yaml
-  - secret-runner-token.yaml
+  # - secret-runner-token.yaml
   - subscription.yaml
