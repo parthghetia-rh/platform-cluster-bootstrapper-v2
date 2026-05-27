@@ -117,7 +117,7 @@ jobs:
 
           echo "Creating initial Keycloak users..."
 
-          oc new-project external-secrets
+          oc project external-secrets || oc new-project external-secrets
 
           oc get secret keycloak-initial-users -n external-secrets >/dev/null 2>&1 || oc create secret generic keycloak-initial-users \
             --from-literal=users="$KEYCLOAK_INITIAL_USERS" \
