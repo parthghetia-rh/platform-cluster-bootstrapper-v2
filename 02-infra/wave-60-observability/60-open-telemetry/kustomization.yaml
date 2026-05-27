@@ -5,7 +5,7 @@ resources:
   - console-link.yaml
   - job-bucket.yaml
   - namespace.yaml
-  - operator-group.yaml
+  # - operator-group.yaml
   - pull-secret-minio-creds.yaml
   - rb-developers-viewer.yaml
   - subscription-opentelemetry.yaml

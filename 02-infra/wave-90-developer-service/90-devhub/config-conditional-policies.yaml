@@ -1,0 +1,116 @@
+# https://www.npmjs.com/package/@backstage-community/plugin-rbac-backend
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rbac-conditional-policies
+data:
+  policies.yaml: |
+    # Workshop admins can view all entities
+    result: CONDITIONAL
+    roleEntityRef: role:default/workshop-admins
+    pluginId: catalog
+    resourceType: catalog-entity
+    permissionMapping:
+      - read
+    conditions:
+      anyOf:
+        - rule: HAS_SPEC
+          resourceType: catalog-entity
+          params:
+            key: type
+            value: service
+        - rule: HAS_SPEC
+          resourceType: catalog-entity
+          params:
+            key: type
+            value: docs
+        - rule: HAS_SPEC
+          resourceType: catalog-entity
+          params:
+            key: type
+            value: module
+        - rule: HAS_SPEC
+          resourceType: catalog-entity
+          params:
+            key: type
+            value: workshop
+        - rule: HAS_SPEC
+          resourceType: catalog-entity
+          params:
+            key: type
+            value: workshop-lab
+        - rule: IS_ENTITY_KIND
+          resourceType: catalog-entity
+          params:
+            kinds:
+              - API
+              - Component
+              - Group
+              - Location
+              - Package
+              - Plugin
+              - Resource
+              - System
+              - User
+              - Template
+    {{- if .Values.developers.users }}
+    {{- range .Values.developers.users }}
+    ---
+    result: CONDITIONAL
+    roleEntityRef: role:default/user-{{ . }}
+    pluginId: catalog
+    resourceType: catalog-entity
+    permissionMapping:
+      - read
+    conditions:
+      anyOf:
+        - rule: IS_ENTITY_KIND
+          resourceType: catalog-entity
+          params:
+            kinds: [API, Group, Location, Package, Plugin, Resource, System, User]
+        - allOf:
+            - rule: IS_ENTITY_KIND
+              resourceType: catalog-entity
+              params:
+                kinds: [Component]
+            - rule: IS_ENTITY_OWNER
+              resourceType: catalog-entity
+              params:
+                claims: [user:default/{{ . }}]
+    {{- end }}
+    {{- else }}
+    ---
+    # Fallback: developers see all workshop-lab components (no per-user filtering)
+    result: CONDITIONAL
+    roleEntityRef: role:default/developers
+    pluginId: catalog
+    resourceType: catalog-entity
+    permissionMapping:
+      - read
+    conditions:
+      anyOf:
+        - rule: HAS_SPEC
+          resourceType: catalog-entity
+          params:
+            key: type
+            value: service
+        - rule: HAS_SPEC
+          resourceType: catalog-entity
+          params:
+            key: type
+            value: docs
+        - rule: HAS_SPEC
+          resourceType: catalog-entity
+          params:
+            key: type
+            value: module
+        - rule: HAS_SPEC
+          resourceType: catalog-entity
+          params:
+            key: type
+            value: workshop-lab
+        - rule: IS_ENTITY_KIND
+          resourceType: catalog-entity
+          params:
+            kinds: [API, Group, Location, Package, Plugin, Resource, System, User]
+    {{- end }}
