@@ -107,6 +107,8 @@ jobs:
 
             vault kv put secret/aws-credentials \
               AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \
+              
+            vault kv put secret/aws-credentials \
               AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY"
 
             vault kv put secret/rosa-domain \
