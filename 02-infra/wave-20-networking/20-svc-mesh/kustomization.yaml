@@ -3,4 +3,4 @@ kind: Kustomization
 
 resources:
   - subscription-svc-mesh3.yaml
-  - subscription.yaml
+  # - subscription.yaml
