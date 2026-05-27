@@ -105,11 +105,18 @@ jobs:
             vault kv put secret/rosa-token \
               token=\"$ROSA_TOKEN\"
 
-            vault kv put secret/aws-credentials \
-              AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \
-              
-            vault kv put secret/aws-credentials \
-              AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY"
+            # 1. Use jq to safely lock the variables into a JSON structure
+          # jq handles all the escaping automatically so the shell can't break it
+          jq -n \
+            --arg access_key "$AWS_ACCESS_KEY_ID" \
+            --arg secret_key "$AWS_SECRET_ACCESS_KEY" \
+            '{ "AWS_ACCESS_KEY_ID": $access_key, "AWS_SECRET_ACCESS_KEY": $secret_key }' > payload.json
+          
+          # 2. Tell Vault to read the secrets directly from the JSON file using the @ symbol
+          vault kv put secret/aws-credentials @payload.json
+          
+          # 3. (Optional but recommended) Delete the file from the runner immediately after
+          rm payload.json
 
             vault kv put secret/rosa-domain \
               domain=\"$CLEAN_DOMAIN\"
