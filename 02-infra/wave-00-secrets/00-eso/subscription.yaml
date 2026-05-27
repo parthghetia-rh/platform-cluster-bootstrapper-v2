@@ -7,7 +7,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "0"
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
-  channel: stable-v1
+  channel: stable-v1.1
   name: openshift-external-secrets-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
