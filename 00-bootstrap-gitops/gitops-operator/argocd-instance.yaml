@@ -246,11 +246,11 @@ spec:
       status: 50
     resources:
       limits:
-        cpu: '2'
-        memory: 2Gi
+        cpu: '4'
+        memory: 4Gi
       requests:
-        cpu: 500m
-        memory: 1Gi
+        cpu: '1'
+        memory: 2Gi
     sharding:
       enabled: true
       replicas: 2
